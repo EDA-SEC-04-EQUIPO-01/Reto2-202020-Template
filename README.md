@@ -30,3 +30,6 @@ Este directorio contiene todo el código de base que se entrega para el funciona
 -Test
 Este directorio contiene las pruebas realizadas a los TADs, Estructuras de Datos y Algoritmos.
 
+- Maria Camila Gomez Hernández - 202011050 - mc.gomezh1@uniandes.edu.co
+- Kevin Cohen Solano - 202011864 - k.cohen@uniandes.edu.co
+- Nicolás Enrique Rueda Rincón - 202013496 - ne.rueda@uniandes.edu.co
