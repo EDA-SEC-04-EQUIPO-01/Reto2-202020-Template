@@ -59,6 +59,31 @@ def addCasting(catalog,casting):
 def moviesSize(catalog):
     return lt.size(catalog["details"])
 
+def getMovieNameByPos(catalog, pos):
+    peli = lt.getElement(catalog["details"],pos)
+    name = peli["original_title"]
+    return name
+
+def getMovieDateByPos(catalog, pos):
+    peli = lt.getElement(catalog["details"],pos) 
+    r_date = peli["release_date"]
+    return r_date
+
+def getMovieVoteCountByPos(catalog,pos):
+    peli = lt.getElement(catalog["details"],pos) 
+    v_count = peli["vote_count"]
+    return v_count
+
+def getMovieVoteAverageByPos(catalog,pos):
+    peli = lt.getElement(catalog["details"],pos) 
+    v_average = peli["vote_average"]
+    return v_average
+
+def getMovieLanguageByPos(catalog,pos):
+    peli = lt.getElement(catalog["details"],pos) 
+    language = peli["original_language"]
+    return language
+
 # ==============================
 # Funciones de Comparacion
 def compare():
