@@ -23,6 +23,7 @@ import config
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
+from DISClib.DataStructures import listiterator as it
 assert config
 
 """
@@ -35,85 +36,19 @@ es decir contiene los modelos con los datos en memoria
 # API del TAD Catalogo de Libros
 
 def newCatalogMovies():
-    
-    catalog = {'id': None, #Va
-               'genres': None, #Va
-               'original_title': None, #Va
-               'production_companies': None, #Va
-               'production_countries': None, #Va
-               'release_date': None, #Va
-               'vote_average': None, #Va
-               'vote_count': None} #Va
-
-    catalog['id'] = lt.newList('SINGLE_LINKED', compare)
-    catalog['genres'] = mp.newMap(200,
-                                   maptype='PROBING',
-                                   loadfactor=0.4,
-                                   comparefunction=compare)
-    catalog['original_title'] = mp.newMap(500,
-                                 maptype='CHAINING',
-                                 loadfactor=0.7,
-                                 comparefunction=compare)
-    catalog['production_companies'] = mp.newMap(1000,
-                                maptype='CHAINING',
-                                loadfactor=0.7,
-                                comparefunction=compare)
-    catalog['production_countries'] = mp.newMap(1000,
-                                  maptype='CHAINING',
-                                  loadfactor=0.7,
-                                  comparefunction=compare)
-    catalog['release_date'] = mp.newMap(500,
-                                 maptype='CHAINING',
-                                 loadfactor=0.7,
-                                 comparefunction=compare)
-    catalog['vote_average'] = mp.newMap(200,
-                                   maptype='PROBING',
-                                   loadfactor=0.4,
-                                   comparefunction=compare)
-    catalog['vote_count'] = mp.newMap(1000,
-                                maptype='CHAINING',
-                                loadfactor=0.7,
-                                comparefunction=compare)
-
+  
+    catalog = {"details":None,
+                "casting":None}
+    catalog["details"]=lt.newList("ARRAY_LIST")
+    catalog["casting"]=lt.newList("ARRAY_LIST")
     return catalog
 
-def newCatalogCasting():
+def addDetails(catalog, details):
+    lt.addLast(catalog["details"],details)
 
-    catalog = {'id': None, #Va
-               'actor1_name': None, #Va
-               'actor2_name': None, #Va
-               'actor3_name': None, #Va
-               'actor4_name': None, #Va
-               'actor5_name': None, #Va
-               'director_name': None} #Va
+def addCasting(catalog,casting):
+    lt.addLast(catalog["casting"],casting)
 
-    catalog['id'] = lt.newList('SINGLE_LINKED', compare)
-    catalog['actor1_name'] = mp.newMap(200,
-                                   maptype='PROBING',
-                                   loadfactor=0.4,
-                                   comparefunction=compare)
-    catalog['actor2_name'] = mp.newMap(1000,
-                                maptype='CHAINING',
-                                loadfactor=0.7,
-                                comparefunction=compare)
-    catalog['actor3_name'] = mp.newMap(500,
-                                 maptype='CHAINING',
-                                 loadfactor=0.7,
-                                 comparefunction=compare)
-    catalog['actor4_name'] = mp.newMap(200,
-                                   maptype='PROBING',
-                                   loadfactor=0.4,
-                                   comparefunction=compare)
-    catalog['actor5_name'] = mp.newMap(1000,
-                                  maptype='CHAINING',
-                                  loadfactor=0.7,
-                                  comparefunction=compare)
-    catalog['director_name'] = mp.newMap(200,
-                                   maptype='PROBING',
-                                   loadfactor=0.4,
-                                   comparefunction=compare)
-
-    return catalog
 
 # -----------------------------------------------------
 
@@ -121,7 +56,8 @@ def newCatalogCasting():
 # Funciones de consulta
 # ==============================
 
-
+def moviesSize(catalog):
+    return lt.size(catalog["details"])
 
 # ==============================
 # Funciones de Comparacion
