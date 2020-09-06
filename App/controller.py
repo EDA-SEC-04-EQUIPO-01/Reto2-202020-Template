@@ -44,3 +44,17 @@ recae sobre el controlador.
 #  Funciones para la carga de datos y almacenamiento
 #  de datos en los modelos
 # ___________________________________________________
+
+def cargarArchivos (crear,tipo)-> str:
+    if tipo == "P":
+        print("cargar los archivos Pequeños en model")
+    if tipo == "G":
+        print("cargar los archivos Grandes en model")
+    if crear == "1":
+        print("creamos los archivos como Arraylist en model")
+        rta = "proceso hecho en model"
+    if crear == "2":
+        print("creamos los archivos como SingleLinkedList en model")
+        rta = "proceso hecho en model"
+    
+    return rta
