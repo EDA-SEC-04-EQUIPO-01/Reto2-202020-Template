@@ -36,6 +36,7 @@ es decir contiene los modelos con los datos en memoria
 # API del TAD Catalogo de Libros
 
 def newCatalogMovies():
+  
     catalog = {"details":None,
                 "casting":None}
     catalog["details"]=lt.newList("ARRAY_LIST")
@@ -47,6 +48,7 @@ def addDetails(catalog, details):
 
 def addCasting(catalog,casting):
     lt.addLast(catalog["casting"],casting)
+
 
 # -----------------------------------------------------
 
