@@ -33,13 +33,14 @@ Presenta el menu de opciones y por cada seleccion
 hace la solicitud al controlador para ejecutar la
 operación seleccionada.
 """
-
 # ___________________________________________________
 #  Ruta a los archivos
 # ___________________________________________________
 
 
-
+booksfile = 'GoodReads/books-small.csv'
+tagsfile = 'GoodReads/tags.csv'
+booktagsfile = 'GoodReads/book_tags-small.csv'
 
 
 # ___________________________________________________
@@ -49,65 +50,101 @@ operación seleccionada.
 # ___________________________________________________
 
 
+def printAuthorData(author):
+    """
+    Imprime los libros de un autor determinado
+    """
+    if author:
+        print('Autor encontrado: ' + author['name'])
+        print('Promedio: ' + str(author['average_rating']))
+        print('Total de libros: ' + str(lt.size(author['books'])))
+        iterator = it.newIterator(author['books'])
+        while it.hasNext(iterator):
+            book = it.next(iterator)
+            print('Titulo: ' + book['title'] + '  ISBN: ' + book['isbn'])
+    else:
+        print('No se encontro el autor')
 
-#  Menu principal ___________________________________________________
+
+def printBooksbyTag(books):
+    """
+    Imprime los libros que han sido clasificados con
+    una etiqueta
+    """
+    print('Se encontraron: ' + str(lt.size(books)) + ' Libros')
+    iterator = it.newIterator(books)
+    while it.hasNext(iterator):
+        book = it.next(iterator)
+        print(book['title'])
+
+
+def printBooksbyYear(books):
+    """
+    Imprime los libros que han sido publicados en un
+    año
+    """
+    print('Se encontraron: ' + str(lt.size(books)) + ' Libros')
+    iterator = it.newIterator(books)
+    while it.hasNext(iterator):
+        book = it.next(iterator)
+        print(book['title'])
+
+# ----------------------------------- MENU ----------------------------------------
+
 def printMenu():
 
     """Imprime el menu de opciones """
 
-    print("\nBienvenido")
-    print("1- Cargar Datos")
-    print("----------------EDITAR NOMBRES  -----------------")
-    print("2- Ranking de peliculas")
-    print("3- Conocer un director")
-    print("4- Conocer un actor")
-    print("5- Entender un genero")
-    print("6- Crear ranking")
+    print("Bienvenido")
+    print("1- Inicializar Catálogo")
+    print("2- Cargar información en el catálogo")
+    print("3- Consultar los libros de un año")
+    print("4- Consultar los libros de un autor")
+    print("5- Consultar los Libros por etiqueta")
     print("0- Salir")
 
 
+while True:
+    printMenu()
+    inputs = input('Seleccione una opción para continuar\n')
 
+    if int(inputs[0]) == 1:
+        print("Inicializando Catálogo ....")
+        cont = controller.initCatalog()
 
-
-def main():
-    """
-    Método principal del programa, se encarga de manejar todos los metodos adicionales creados
-
-    Instancia una lista vacia en la cual se guardarán los datos cargados desde el archivo
-    Args: None
-    Return: None 
-    """
-
-    while True:
-        printMenu() #imprimir el menu de opciones en consola
-        inputs =input('Seleccione una opción para continuar\n') #leer opción ingresada
-        if len(inputs)>0:
-
-            if int(inputs[0])==1: #opcion 1
-                tipo=input("Quieres cargar el archivo grande(G) o pequeño(P): ").upper()
+        #______________________C O D I G O        N O     U T I L I Z A D O ______________________
+        """tipo=input("Quieres cargar el archivo grande(G) o pequeño(P): ").upper()
                 op=input("Quieres ejecutar los archivos como ArrayList(1) o como SingleLinkedList(2): ")
                 if (op == "1" or op == "2") and (tipo == "G" or tipo == "P"):
                     print("Procesando...")
                     respuesta= controller.cargarArchivos(op,tipo)
                     print(respuesta)
                 else:
-                    print("Se ha encontrado un digito introducido erroneo")
-            elif int(inputs[0])==2: #opcion 2
-                pass
-            elif int(inputs[0])==3: #opcion 3
-                pass
-            elif int(inputs[0])==4: #opcion 4
-                pass
-            elif int(inputs[0])==3: #opcion 5
-                pass
-            elif int(inputs[0])==4: #opcion 6
-                pass
-            elif int(inputs[0])==0: #opcion 0, salir
-                sys.exit(0)
-            else:
-                print("Numero no valido")
+                    print("Se ha encontrado un digito introducido erroneo")"""
+        #______________F I N         C O D I G O        N O     U T I L I Z A D O ________________
+        
 
+    elif int(inputs[0]) == 2:
+        print("Cargando información de los archivos ....")
+        controller.loadData(cont, booksfile, tagsfile, booktagsfile)
+        print('Libros cargados: ' + str(controller.booksSize(cont)))
+        print('Autores cargados: ' + str(controller.authorsSize(cont)))
+        print('Géneros cargados: ' + str(controller.tagsSize(cont)))
 
+    elif int(inputs[0]) == 3:
+        number = input("Buscando libros del año?: ")
+        books = controller.getBooksYear(cont, int(number))
+        printBooksbyYear(books)
 
-if __name__ == "__main__":
-    main()
+    elif int(inputs[0]) == 4:
+        authorname = input("Nombre del autor a buscar: ")
+        authorinfo = controller.getBooksByAuthor(cont, authorname)
+        printAuthorData(authorinfo)
+
+    elif int(inputs[0]) == 5:
+        label = input("Etiqueta a buscar: ")
+        books = controller.getBooksByTag(cont, label)
+        printBooksbyTag(books)
+    else:
+        sys.exit(0)
+sys.exit(0)
