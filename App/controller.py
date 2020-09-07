@@ -89,4 +89,3 @@ def getMovieVoteAverageByPos(catalog,pos):
 
 def getMovieLanguageByPos(catalog,pos):
     return model.getMovieLanguageByPos(catalog,pos)
-

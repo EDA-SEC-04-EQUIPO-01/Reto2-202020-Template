@@ -29,7 +29,6 @@ assert config
 """
 En este archivo definimos los TADs que vamos a usar,
 es decir contiene los modelos con los datos en memoria
-
 """
 
 # -----------------------------------------------------
@@ -58,6 +57,7 @@ def addCasting(catalog,casting):
 
 def moviesSize(catalog):
     return lt.size(catalog["details"])
+
 
 def getMovieNameByPos(catalog, pos):
     peli = lt.getElement(catalog["details"],pos)
