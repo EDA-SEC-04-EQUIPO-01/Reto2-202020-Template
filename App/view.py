@@ -52,44 +52,6 @@ movies_casting = 'themoviesdb/MoviesCastingRaw-small'
 # ___________________________________________________
 
 
-def printAuthorData(author):
-    """
-    Imprime los libros de un autor determinado
-    """
-    if author:
-        print('Autor encontrado: ' + author['name'])
-        print('Promedio: ' + str(author['average_rating']))
-        print('Total de libros: ' + str(lt.size(author['books'])))
-        iterator = it.newIterator(author['books'])
-        while it.hasNext(iterator):
-            book = it.next(iterator)
-            print('Titulo: ' + book['title'] + '  ISBN: ' + book['isbn'])
-    else:
-        print('No se encontro el autor')
-
-
-def printBooksbyTag(books):
-    """
-    Imprime los libros que han sido clasificados con
-    una etiqueta
-    """
-    print('Se encontraron: ' + str(lt.size(books)) + ' Libros')
-    iterator = it.newIterator(books)
-    while it.hasNext(iterator):
-        book = it.next(iterator)
-        print(book['title'])
-
-
-def printBooksbyYear(books):
-    """
-    Imprime los libros que han sido publicados en un
-    año
-    """
-    print('Se encontraron: ' + str(lt.size(books)) + ' Libros')
-    iterator = it.newIterator(books)
-    while it.hasNext(iterator):
-        book = it.next(iterator)
-        print(book['title'])
 
 # ----------------------------------- MENU ----------------------------------------
 
@@ -113,15 +75,17 @@ while True:
         controller.loadData(catalogo, movies_details, movies_casting)
 
         # Puntos a,b,c,d,e,f a contestar:
-        print(str("La cantidad de películas cargadas es: ") +str(controller.moviesSize))
-        print(str("El titulo de estas peliculas son: ") +str(controller.getMovieNameByPos(catalogo,1)))
-        print(str("Las fechas de estreno fueron: ") +str(controller.getMovieDateByPos(catalogo,1)))
-        print(str("El promedio de votacion de estas peliculas fue de: ") +str(controller.getMovieVoteCountByPos(catalogo,1)))
-        print(str("El numero de votos de estas peliculas fue de: ") +str(controller.getMovieVoteAverageByPos(catalogo,1)))
-        print(str("Los idiomas de estas peliculas son: ") +str(controller.getMovieLanguageByPos(catalogo,1)))
+        print("La cantidad de películas cargadas es: ", controller.moviesSize(catalogo))
+        print("El titulo de la primera y última película son: ", controller.getMovieNameByPos(catalogo,1), controller.getMovieNameByPos(catalogo,int(controller.moviesSize(catalogo))))
+        print("Las fechas de estreno fueron: ",controller.getMovieDateByPos(catalogo,1),controller.getMovieDateByPos(catalogo,int(controller.moviesSize(catalogo))))
+        print("El promedio de votacion de estas peliculas fue de: ", controller.getMovieVoteCountByPos(catalogo,1),controller.getMovieVoteCountByPos(catalogo,int(controller.moviesSize(catalogo))))
+        print("El numero de votos de estas peliculas fue de: ", controller.getMovieVoteAverageByPos(catalogo,1), controller.getMovieVoteAverageByPos(catalogo,int(controller.moviesSize(catalogo))))
+        print("Los idiomas de estas peliculas son: ", controller.getMovieLanguageByPos(catalogo,1), controller.getMovieLanguageByPos(catalogo,int(controller.moviesSize(catalogo))))
 
 
 
     else:
         sys.exit(0)
 sys.exit(0)
+
+
