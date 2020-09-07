@@ -51,22 +51,21 @@ def loadData(catalog, file_details, file_casting):
     loadDetails(catalog, file_details)
     loadCasting(catalog,file_casting)
 
-def load(file):
+def loadDetails(catalog, file_details):
     dialect = csv.excel()
     dialect.delimiter=";"
-    with open(  cf.data_dir + file, encoding="utf-8") as csvfile:
+    with open(  cf.data_dir + file_details, encoding="utf-8") as csvfile:
         row = csv.DictReader(csvfile, dialect=dialect)
-    return row
-
-def loadDetails(catalog, file_details):
-    row = load(file_details)
-    for details in row: 
-        model.addMovie(catalog, details)
+        for details in row: 
+            model.addDetails(catalog, details)
 
 def loadCasting(catalog, file_casting):
-    row = load(file_casting)
-    for casting in row: 
-        model.addCasting(catalog, casting)
+    dialect = csv.excel()
+    dialect.delimiter=";"
+    with open(  cf.data_dir + file_casting, encoding="utf-8") as csvfile:
+        row = csv.DictReader(csvfile, dialect=dialect)
+        for casting in row: 
+            model.addCasting(catalog, casting)
 
 # ___________________________________________________
 #  Funciones para consultas
@@ -79,7 +78,7 @@ def getMovieNameByPos(catalog, pos):
     return model.getMovieNameByPos(catalog, pos)
 
 def getMovieDateByPos(catalog, pos):
-    return model.getMovieDatePos(catalog, pos)
+    return model.getMovieDateByPos(catalog, pos)
 
 def getMovieVoteCountByPos(catalog,pos):
     return model.getMovieVoteCountByPos(catalog,pos)
