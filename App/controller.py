@@ -37,6 +37,9 @@ recae sobre el controlador.
 #  Inicializacion del catalogo
 # ___________________________________________________
 
+def initCatalog():
+    catalog = model.newCatalogMovies()
+    return catalog
 
 
 
@@ -44,17 +47,45 @@ recae sobre el controlador.
 #  Funciones para la carga de datos y almacenamiento
 #  de datos en los modelos
 # ___________________________________________________
+def loadData(catalog, file_details, file_casting):
+    loadDetails(catalog, file_details)
+    loadCasting(catalog,file_casting)
 
-def cargarArchivos (crear,tipo)-> str:
-    if tipo == "P":
-        print("cargar los archivos Pequeños en model")
-    if tipo == "G":
-        print("cargar los archivos Grandes en model")
-    if crear == "1":
-        print("creamos los archivos como Arraylist en model")
-        rta = "proceso hecho en model"
-    if crear == "2":
-        print("creamos los archivos como SingleLinkedList en model")
-        rta = "proceso hecho en model"
-    
-    return rta
+def load(file):
+    dialect = csv.excel()
+    dialect.delimiter=";"
+    with open(  cf.data_dir + file, encoding="utf-8") as csvfile:
+        row = csv.DictReader(csvfile, dialect=dialect)
+    return row
+
+def loadDetails(catalog, file_details):
+    row = load(file_details)
+    for details in row: 
+        model.addMovie(catalog, details)
+
+def loadCasting(catalog, file_casting):
+    row = load(file_casting)
+    for casting in row: 
+        model.addCasting(catalog, casting)
+
+# ___________________________________________________
+#  Funciones para consultas
+# ___________________________________________________
+
+def moviesSize(catalog):
+    return model.moviesSize(catalog)
+
+def getMovieNameByPos(catalog, pos):
+    return model.getMovieNameByPos(catalog, pos)
+
+def getMovieDateByPos(catalog, pos):
+    return model.getMovieDatePos(catalog, pos)
+
+def getMovieVoteCountByPos(catalog,pos):
+    return model.getMovieVoteCountByPos(catalog,pos)
+
+def getMovieVoteAverageByPos(catalog,pos):
+    return model.getMovieVoteAverageByPos(catalog,pos)
+
+def getMovieLanguageByPos(catalog,pos):
+    return model.getMovieLanguageByPos(catalog,pos)

@@ -42,6 +42,8 @@ booksfile = 'GoodReads/books-small.csv'
 tagsfile = 'GoodReads/tags.csv'
 booktagsfile = 'GoodReads/book_tags-small.csv'
 
+movies_details = 'themoviesdb/SmallMoviesDetailsCleaned.csv'
+movies_casting = 'themoviesdb/MoviesCastingRaw-small'
 
 # ___________________________________________________
 #  Funciones para imprimir la inforamación de
@@ -96,11 +98,7 @@ def printMenu():
     """Imprime el menu de opciones """
 
     print("Bienvenido")
-    print("1- Inicializar Catálogo")
-    print("2- Cargar información en el catálogo")
-    print("3- Consultar los libros de un año")
-    print("4- Consultar los libros de un autor")
-    print("5- Consultar los Libros por etiqueta")
+    print("1- Cargar datos")
     print("0- Salir")
 
 
@@ -110,41 +108,20 @@ while True:
 
     if int(inputs[0]) == 1:
         print("Inicializando Catálogo ....")
-        cont = controller.initCatalog()
-
-        #______________________C O D I G O        N O     U T I L I Z A D O ______________________
-        """tipo=input("Quieres cargar el archivo grande(G) o pequeño(P): ").upper()
-                op=input("Quieres ejecutar los archivos como ArrayList(1) o como SingleLinkedList(2): ")
-                if (op == "1" or op == "2") and (tipo == "G" or tipo == "P"):
-                    print("Procesando...")
-                    respuesta= controller.cargarArchivos(op,tipo)
-                    print(respuesta)
-                else:
-                    print("Se ha encontrado un digito introducido erroneo")"""
-        #______________F I N         C O D I G O        N O     U T I L I Z A D O ________________
-        
-
-    elif int(inputs[0]) == 2:
+        catalogo = controller.initCatalog()
         print("Cargando información de los archivos ....")
-        controller.loadData(cont, booksfile, tagsfile, booktagsfile)
-        print('Libros cargados: ' + str(controller.booksSize(cont)))
-        print('Autores cargados: ' + str(controller.authorsSize(cont)))
-        print('Géneros cargados: ' + str(controller.tagsSize(cont)))
+        controller.loadData(catalogo, movies_details, movies_casting)
 
-    elif int(inputs[0]) == 3:
-        number = input("Buscando libros del año?: ")
-        books = controller.getBooksYear(cont, int(number))
-        printBooksbyYear(books)
+        # Puntos a,b,c,d,e,f a contestar:
+        print(str("La cantidad de películas cargadas es: ") +str(controller.moviesSize))
+        print(str("El titulo de estas peliculas son: ") +str(controller.getMovieNameByPos(catalogo,1)))
+        print(str("Las fechas de estreno fueron: ") +str(controller.getMovieDateByPos(catalogo,1)))
+        print(str("El promedio de votacion de estas peliculas fue de: ") +str(controller.getMovieVoteCountByPos(catalogo,1)))
+        print(str("El numero de votos de estas peliculas fue de: ") +str(controller.getMovieVoteAverageByPos(catalogo,1)))
+        print(str("Los idiomas de estas peliculas son: ") +str(controller.getMovieLanguageByPos(catalogo,1)))
 
-    elif int(inputs[0]) == 4:
-        authorname = input("Nombre del autor a buscar: ")
-        authorinfo = controller.getBooksByAuthor(cont, authorname)
-        printAuthorData(authorinfo)
 
-    elif int(inputs[0]) == 5:
-        label = input("Etiqueta a buscar: ")
-        books = controller.getBooksByTag(cont, label)
-        printBooksbyTag(books)
+
     else:
         sys.exit(0)
 sys.exit(0)

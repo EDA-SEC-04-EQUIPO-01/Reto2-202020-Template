@@ -23,32 +23,45 @@ import config
 from DISClib.ADT import list as lt
 from DISClib.ADT import map as mp
 from DISClib.DataStructures import mapentry as me
+from DISClib.DataStructures import listiterator as it
 assert config
 
 """
 En este archivo definimos los TADs que vamos a usar,
 es decir contiene los modelos con los datos en memoria
-
 """
 
 # -----------------------------------------------------
 # API del TAD Catalogo de Libros
+
+def newCatalogMovies():
+  
+    catalog = {"details":None,
+                "casting":None}
+    catalog["details"]=lt.newList("ARRAY_LIST")
+    catalog["casting"]=lt.newList("ARRAY_LIST")
+    return catalog
+
+def addDetails(catalog, details):
+    lt.addLast(catalog["details"],details)
+
+def addCasting(catalog,casting):
+    lt.addLast(catalog["casting"],casting)
+
+
 # -----------------------------------------------------
-
-
-
-# Funciones para agregar informacion al catalogo
-
-
 
 # ==============================
 # Funciones de consulta
 # ==============================
 
-
+def moviesSize(catalog):
+    return lt.size(catalog["details"])
 
 # ==============================
 # Funciones de Comparacion
+def compare():
+    pass
 # ==============================
 
 
