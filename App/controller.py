@@ -57,7 +57,14 @@ def loadDetails(catalog, file_details):
     with open(  cf.data_dir + file_details, encoding="utf-8") as csvfile:
         row = csv.DictReader(csvfile, dialect=dialect)
         for details in row: 
-            model.addDetails(catalog, details)
+            model.addId(catalog, details)
+            model.addgenre(catalog,details)
+            model.addtitle(catalog,details)
+            model.addCompanies(catalog,details)
+            model.addCountries(catalog,details)
+            model.addVoteCount(catalog,details)
+            model.addVoteAverage(catalog,details)
+
 
 def loadCasting(catalog, file_casting):
     dialect = csv.excel()
@@ -65,8 +72,11 @@ def loadCasting(catalog, file_casting):
     with open(  cf.data_dir + file_casting, encoding="utf-8") as csvfile:
         row = csv.DictReader(csvfile, dialect=dialect)
         for casting in row: 
-            model.addCasting(catalog, casting)
+            model.addActors(catalog, casting)
+            model.addDirector(catalog,casting)
 
+def discoverProducerCompany(catalog,company):
+    return model.discoverProducerCompany(catalog,company)
 # ___________________________________________________
 #  Funciones para consultas
 # ___________________________________________________
