@@ -196,7 +196,6 @@ def discoverProducerCompany(catalog,company):
         prom = round(sprom/count,2)
         res = (pelis,count,prom)
     except:
-        print("Esta compañía no existe en el registro")
         res = None
     return res
     

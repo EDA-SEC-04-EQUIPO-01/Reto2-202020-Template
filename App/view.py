@@ -75,6 +75,8 @@ while True:
         x = controller.discoverProducerCompany(catalogo,company)
         if x != None:
             print(x[0],"\nLa lista que se imprimió contiene las",x[1],"películas de la compañía",company.title(),"que tienen un promedio acumulado de",x[2])
+        else:
+            print("Esta compañía no existe en el registro")
     else:
         sys.exit(0)
 sys.exit(0)
