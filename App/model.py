@@ -46,43 +46,43 @@ def newCatalogMovies():
                'vote_count': None, #vA
                'actor_name': None, #Va
                'director_name': None} #Va
-    catalog['id']=lt.newList("ARRAY_LIST")
+    catalog['id']=lt.newList("ARRAY_LIST",cmpfunction=compare_str)
     catalog['genres'] = mp.newMap(50,
                                    maptype='CHAINING',
                                    loadfactor=0.8,
-                                   comparefunction=compare)
+                                   comparefunction=compare_str)
     catalog['original_title'] = mp.newMap(400000,
                                  maptype='CHAINING',
                                  loadfactor=1,
-                                 comparefunction=compare)
+                                 comparefunction=compare_str)
     catalog['production_companies'] = mp.newMap(20000,
                                 maptype='CHAINING',
                                 loadfactor=0.8,
-                                comparefunction=compare)
+                                comparefunction=compare_str)
     catalog['production_countries'] = mp.newMap(200,
                                 maptype='CHAINING',
                                 loadfactor=0.8,
-                                comparefunction=compare)
+                                comparefunction=compare_str)
     catalog['release_date'] = mp.newMap(400000,
                                    maptype='CHAINING',
                                    loadfactor=1,
-                                   comparefunction=compare)
+                                   comparefunction=compare_str)
     catalog['vote_count'] = mp.newMap(400000,
                                    maptype='CHAINING',
                                    loadfactor=1,
-                                   comparefunction=compare)
+                                   comparefunction=compare_num)
     catalog['vote_average'] = mp.newMap(400000,
                                    maptype='CHAINING',
                                    loadfactor=1,
-                                   comparefunction=compare)
+                                   comparefunction=compare_num)
     catalog['actor_name'] = mp.newMap(1000000,
                                    maptype='CHAINING',
                                    loadfactor=0.8,
-                                   comparefunction=compare)
+                                   comparefunction=compare_str)
     catalog['director_name'] = mp.newMap(100000,
                                    maptype='CHAINING',
                                    loadfactor=0.8,
-                                   comparefunction=compare)
+                                   comparefunction=compare_str)
     
 
     return catalog
@@ -196,7 +196,6 @@ def discoverProducerCompany(catalog,company):
         prom = round(sprom/count,2)
         res = (pelis,count,prom)
     except:
-        print("Esta compañía no existe en el registro")
         res = None
     return res
     
@@ -206,7 +205,7 @@ def discoverProducerCompany(catalog,company):
 
 # ==============================
 # Funciones de Comparacion
-def compare(keyname, value):
+def compare_str(keyname, value):
 
     compare = me.getKey(value)
     if (keyname == compare):
@@ -215,6 +214,14 @@ def compare(keyname, value):
         return 1
     else:
         return -1
+
+def compare_num(keyname, value):
+
+    compare = float(me.getKey(value))
+    if (float(keyname) == compare):
+        return 0
+    elif (float(keyname) > compare):
+        return 1
+    else:
+        return -1
 # ==============================
-
-
