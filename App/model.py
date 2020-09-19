@@ -45,44 +45,49 @@ def newCatalogMovies():
                'vote_average': None, #Va
                'vote_count': None, #vA
                'actor_name': None, #Va
-               'director_name': None} #Va
-    catalog['id']=lt.newList("ARRAY_LIST")
+               'director_name': None, #Va
+               'director_id':None} #Va
+    catalog['id']=lt.newList("ARRAY_LIST",cmpfunction=compare_num)
     catalog['genres'] = mp.newMap(50,
                                    maptype='CHAINING',
                                    loadfactor=0.8,
-                                   comparefunction=compare)
+                                   comparefunction=compare_str)
     catalog['original_title'] = mp.newMap(400000,
                                  maptype='CHAINING',
                                  loadfactor=1,
-                                 comparefunction=compare)
-    catalog['production_companies'] = mp.newMap(20000,
+                                 comparefunction=compare_num)
+    catalog['production_companies'] = mp.newMap(350000,
                                 maptype='CHAINING',
                                 loadfactor=0.8,
-                                comparefunction=compare)
+                                comparefunction=compare_str)
     catalog['production_countries'] = mp.newMap(200,
                                 maptype='CHAINING',
                                 loadfactor=0.8,
-                                comparefunction=compare)
+                                comparefunction=compare_str)
     catalog['release_date'] = mp.newMap(400000,
                                    maptype='CHAINING',
                                    loadfactor=1,
-                                   comparefunction=compare)
+                                   comparefunction=compare_num)
     catalog['vote_count'] = mp.newMap(400000,
                                    maptype='CHAINING',
                                    loadfactor=1,
-                                   comparefunction=compare)
+                                   comparefunction=compare_num)
     catalog['vote_average'] = mp.newMap(400000,
                                    maptype='CHAINING',
                                    loadfactor=1,
-                                   comparefunction=compare)
+                                   comparefunction=compare_num)
     catalog['actor_name'] = mp.newMap(1000000,
                                    maptype='CHAINING',
                                    loadfactor=0.8,
-                                   comparefunction=compare)
-    catalog['director_name'] = mp.newMap(100000,
+                                   comparefunction=compare_str)
+    catalog['director_name'] = mp.newMap(350000,
                                    maptype='CHAINING',
                                    loadfactor=0.8,
-                                   comparefunction=compare)
+                                   comparefunction=compare_str)
+    catalog['director_id'] = mp.newMap(400000,
+                                   maptype='CHAINING',
+                                   loadfactor=0.8,
+                                   comparefunction=compare_num)
     
 
     return catalog
@@ -114,13 +119,16 @@ def addCompanies(catalog,details):
         lt.addLast(a["value"],details["\ufeffid"])
 
 def addCountries(catalog,details):
-    if mp.get(catalog["production_countries"],details["production_countries"])==None:
+    if mp.get(catalog["production_countries"],details["production_countries"].lower())==None:
         genl=lt.newList(datastructure="ARRAY_LIST",cmpfunction=None)
         lt.addLast(genl,details["\ufeffid"])
-        mp.put(catalog["production_countries"],details["production_countries"],genl)
+        mp.put(catalog["production_countries"],details["production_countries"].lower(),genl)
     else:
-        a = mp.get(catalog["production_countries"],details["production_countries"])
+        a = mp.get(catalog["production_countries"],details["production_countries"].lower())
         lt.addLast(a["value"],details["\ufeffid"])
+
+def addReleaseDate(catalog,details):
+    mp.put(catalog["release_date"],details["\ufeffid"],details["release_date"])
 
 def addVoteCount(catalog,details):
     mp.put(catalog["vote_count"],details["\ufeffid"],details["vote_count"])
@@ -145,13 +153,16 @@ def addActors(catalog,casting):
             lt.addLast(b["value"],casting["id"])
 
 def addDirector(catalog,casting):
-    if mp.get(catalog["director_name"],casting["director_name"])==None:
+    if mp.get(catalog["director_name"],casting["director_name"].lower())==None:
         genl=lt.newList(datastructure="ARRAY_LIST",cmpfunction=None)
         lt.addLast(genl,casting["id"])
-        mp.put(catalog["director_name"],casting["director_name"],genl)
+        mp.put(catalog["director_name"],casting["director_name"].lower(),genl)
     else:
-        a = mp.get(catalog["director_name"],casting["director_name"])
+        a = mp.get(catalog["director_name"],casting["director_name"].lower())
         lt.addLast(a["value"],casting["id"])
+
+def addDirectorId(catalog,casting):
+    mp.put(catalog["director_id"],casting["id"],casting["director_name"])
 
 
 # -----------------------------------------------------
@@ -183,29 +194,71 @@ def getMovieVoteAverageByPos(catalog,pos):
 def discoverProducerCompany(catalog,company):
     idpelis = mp.get(catalog["production_companies"],company.lower())
     try:
-        iterator = it.newIterator(idpelis["value"])
-        count = lt.size(idpelis["value"])
-        pelis = []
+        iterator = it.newIterator(me.getValue(idpelis))
+        count = lt.size(me.getValue(idpelis))
+        pelis = lt.newList("ARRAY_LIST")
         sprom = 0
         while it.hasNext(iterator):
             element = it.next(iterator)
             peli = mp.get(catalog["original_title"],element)
-            pelis.append(peli["value"])
+            lt.addLast(pelis,me.getValue(peli))
             average = mp.get(catalog["vote_average"],element)
-            sprom+= float(average["value"])
+            sprom+= float(me.getValue(average))
+        prom = round(sprom/count,2)
+        res = (pelis,count,prom)
+    except:
+        res = None
+    return res
+
+def discoverDirector(catalog,director_name):
+    idpelis = mp.get(catalog["director_name"],director_name.lower())
+    try:
+        iterator = it.newIterator(me.getValue(idpelis))
+        count = lt.size(me.getValue(idpelis))
+        pelis = lt.newList("ARRAY_LIST")
+        sprom = 0
+        while it.hasNext(iterator):
+            element = it.next(iterator)
+            peli = mp.get(catalog["original_title"],element)
+            lt.addLast(pelis,me.getValue(peli))
+            average = mp.get(catalog["vote_average"],element)
+            sprom+= float(me.getValue(average))
         prom = round(sprom/count,2)
         res = (pelis,count,prom)
     except:
         res = None
     return res
     
+def discoverMoviesByCountry(catalog,country):
+    idpelis = mp.get(catalog["production_countries"],country.lower())
 
+    try:
+        iterator = it.newIterator(me.getValue(idpelis))
+        pelis = lt.newList("ARRAY_LIST")
+        count = lt.size(idpelis)
+        while it.hasNext(iterator):
+            element = it.next(iterator)
+            try:
+                nombre = me.getValue(mp.get(catalog["original_title"],element))
+                fecha = me.getValue(mp.get(catalog["release_date"],element))
+                fechad = fecha.rsplit("/")
+                año = fechad[2]
+                director = me.getValue(mp.get(catalog["director_id"],element))
+                peli = {"Título":nombre,"Año de lanzamiento":año,"Director":director}
+                lt.addLast(pelis,peli)
+            except:
+                pass 
+        res = (pelis,count)
+    except:
+        res = None
+    return res
+   
 
     
 
 # ==============================
 # Funciones de Comparacion
-def compare(keyname, value):
+def compare_str(keyname, value):
 
     compare = me.getKey(value)
     if (keyname == compare):
@@ -214,6 +267,14 @@ def compare(keyname, value):
         return 1
     else:
         return -1
+
+def compare_num(keyname, value):
+
+    compare = float(me.getKey(value))
+    if (float(keyname) == compare):
+        return 0
+    elif (float(keyname) > compare):
+        return 1
+    else:
+        return -1
 # ==============================
-
-

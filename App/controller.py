@@ -62,6 +62,7 @@ def loadDetails(catalog, file_details):
             model.addtitle(catalog,details)
             model.addCompanies(catalog,details)
             model.addCountries(catalog,details)
+            model.addReleaseDate(catalog,details)
             model.addVoteCount(catalog,details)
             model.addVoteAverage(catalog,details)
 
@@ -74,9 +75,17 @@ def loadCasting(catalog, file_casting):
         for casting in row: 
             model.addActors(catalog, casting)
             model.addDirector(catalog,casting)
+            model.addDirectorId(catalog,casting)
 
 def discoverProducerCompany(catalog,company):
     return model.discoverProducerCompany(catalog,company)
+
+def discoverDirector(catalog,director_name):
+    return model.discoverDirector(catalog,director_name)
+
+def discoverMoviesByCountry(catalog,country):
+    return model.discoverMoviesByCountry(catalog,country)
+
 # ___________________________________________________
 #  Funciones para consultas
 # ___________________________________________________

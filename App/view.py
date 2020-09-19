@@ -57,6 +57,10 @@ def printMenu():
     print("Bienvenido")
     print("1- Cargar datos")
     print("2- Descubrir una compañía de producción")
+    print("3- Conocer un director")
+    print("4- Conocer un actor")
+    print("5- Conocer un genero")
+    print("6- Descubrir un país")
     print("0- Salir")
 
 
@@ -71,12 +75,26 @@ while True:
         controller.loadData(catalogo, movies_details, movies_casting)
         print("Se cargo la información de",lt.size(catalogo["id"]),"películas")
     elif int(inputs[0]) == 2:
-        company = input("Inserte el nombre de la compañía que desea conocer: ").lower()
-        x = controller.discoverProducerCompany(catalogo,company)
-        if x != None:
-            print(x[0],"\nLa lista que se imprimió contiene las",x[1],"películas de la compañía",company.title(),"que tienen un promedio acumulado de",x[2])
+        company = input("Inserte el nombre de la compañía que desea conocer: ")
+        producer = controller.discoverProducerCompany(catalogo,company)
+        if producer != None:
+            print(producer[0],"\nLa lista que se imprimió contiene las",producer[1],"películas de la compañía",company.title(),"que tienen un promedio acumulado de",producer[2],"\n")
         else:
             print("Esta compañía no existe en el registro")
+    elif int(inputs[0]) == 3:
+        director_name = input("Inserte el nobre del director ue desea conocer: ")
+        director = controller.discoverDirector(catalogo, director_name)
+        if director != None:
+            print(director[0],"\nLa lista que se imprimió contiene las",director[1],"películas del director",director_name.title(),"que tienen un promedio acumulado de",director[2],"\n")
+        else:
+            print("Este director no existe en el registro")
+    elif int(inputs[0]) == 6:
+        country = input("Inserte el nombre del país que desea conocer: ")
+        countries = controller.discoverMoviesByCountry(catalogo,country)
+        if countries != None:
+            print(countries[0],"\nSe imprimió la lista de las",countries[1],"peliculas del país",country.title())
+        else:
+            print("Este país no existe en el registro")
     else:
         sys.exit(0)
 sys.exit(0)
