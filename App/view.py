@@ -92,11 +92,9 @@ while True:
         country = input("Inserte el nombre del país que desea conocer: ")
         countries = controller.discoverMoviesByCountry(catalogo,country)
         if countries != None:
-
             print(countries[0],"\nSe imprimió la lista de las",countries[1],"peliculas del país",country.title())
         else:
             print("Este país no existe en el registro")
-
     else:
         sys.exit(0)
 sys.exit(0)
