@@ -224,10 +224,11 @@ def discoverDirector(catalog,director_name):
             average = mp.get(catalog["vote_average"],element)
             sprom+= float(me.getValue(average))
         prom = round(sprom/count,2)
-        res = (pelis,count,prom)
+        res = (pelis,count,prom) 
     except:
         res = None
     return res
+
 
 def getActorInformation(catalog,actor):
     idactors = mp.get(catalog["actor_name"], actor)
@@ -258,6 +259,25 @@ def getActorInformation(catalog,actor):
 
     return retorno
 
+
+def moviesByGenre(catalog,genero):
+    idgeneros = mp.get(catalog["genres"],genero)
+    try:
+        iterator = it.newIterator(me.getValue(idgeneros))
+        cantidad = lt.size(me.getValue(idgeneros))
+        peli_genero = lt.newList("ARRAY_LIST")
+        votos = 0
+        while it.hasNext(iterator):
+            element = it.next(iterator)
+            nombres_peli = mp.get(catalog["original_title"],element)
+            lt.addLast(peli_genero,me.getValue(nombres_peli))
+            average = mp.get(catalog["vote_average"],element)
+            votos+= float(me.getValue(average))
+        promedio = round(votos/cantidad,2)
+        res = (cantidad,promedio,peli_genero)
+    except:
+        res = None
+    return res
 
 def discoverMoviesByCountry(catalog,country):
     idpelis = mp.get(catalog["production_countries"],country.lower())

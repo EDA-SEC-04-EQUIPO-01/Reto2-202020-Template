@@ -88,6 +88,7 @@ while True:
             print(director[0],"\nLa lista que se imprimió contiene las",director[1],"películas del director",director_name.title(),"que tienen un promedio acumulado de",director[2],"\n")
         else:
             print("Este director no existe en el registro")
+
     elif int(inputs[0]) == 4:
         actor_name = input("Inserte el nombre del actor que desea conocer: ")
         actor = controller.getActorInformation(catalogo, actor_name)
@@ -95,6 +96,15 @@ while True:
             print("Las películas en las que actuó son :", actor[0], ", la cantidad de películas en las que actuó es:", actor[1], ", estos son los promedios de todas sus películas:",actor[2],"el director con el que más participó es: ",actor[3])
         else:
             print("El actor", actor_name, "no se encuentra en la base de datos.")
+
+    elif int(inputs[0]) == 5:
+        gen_name = input("Inserte el nombre de un género cinematográfico: ")
+        genero = controller.moviesByGenre(catalogo, gen_name)
+        if genero != None:
+            print("Se han encontrado",genero[0],"peliculas del genero",gen_name,"con un promedio de ",genero[1],"\nEstas peliculas son: ",genero[2])
+        else:
+            print("No se ha encontrado ninguna pelicula con el genero ingresado")
+
     elif int(inputs[0]) == 6:
         country = input("Inserte el nombre del país que desea conocer: ")
         countries = controller.discoverMoviesByCountry(catalogo,country)
