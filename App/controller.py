@@ -86,6 +86,9 @@ def discoverDirector(catalog,director_name):
 def discoverMoviesByCountry(catalog,country):
     return model.discoverMoviesByCountry(catalog,country)
 
+def moviesByGenre(catalog,genero):
+    return model.moviesByGenre(catalog,genero)
+
 # ___________________________________________________
 #  Funciones para consultas
 # ___________________________________________________

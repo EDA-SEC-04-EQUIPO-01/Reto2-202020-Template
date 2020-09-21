@@ -82,12 +82,22 @@ while True:
         else:
             print("Esta compañía no existe en el registro")
     elif int(inputs[0]) == 3:
-        director_name = input("Inserte el nobre del director ue desea conocer: ")
+        director_name = input("Inserte el nombre del director que desea conocer: ")
         director = controller.discoverDirector(catalogo, director_name)
         if director != None:
             print(director[0],"\nLa lista que se imprimió contiene las",director[1],"películas del director",director_name.title(),"que tienen un promedio acumulado de",director[2],"\n")
         else:
             print("Este director no existe en el registro")
+    # - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - -
+    #         Espacio reservado para la funcion 4 :3 
+    # - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - -
+    elif int(inputs[0]) == 5:
+        gen_name = input("Inserte el nombre de un género cinematográfico: ")
+        genero = controller.moviesByGenre(catalogo, gen_name)
+        if genero != None:
+            print("Se han encontrado",genero[0],"peliculas del genero",gen_name,"con un promedio de ",genero[1],"\nEstas peliculas son: ",genero[2])
+        else:
+            print("No se ha encontrado ninguna pelicula con el genero ingresado")
     elif int(inputs[0]) == 6:
         country = input("Inserte el nombre del país que desea conocer: ")
         countries = controller.discoverMoviesByCountry(catalogo,country)
