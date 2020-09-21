@@ -78,16 +78,23 @@ while True:
         company = input("Inserte el nombre de la compañía que desea conocer: ")
         producer = controller.discoverProducerCompany(catalogo,company)
         if producer != None:
-            print(producer[0],"\nLa lista que se imprimió contiene las",producer[1],"películas de la compañía",company.title(),"que tienen un promedio acumulado de",producer[2],"\n")
+            print("Las películas producidas por esta compañia son:",producer[0],"\nLa lista que se imprimió contiene las",producer[1],"películas de la compañía",company.title(),"que tienen un promedio acumulado de",producer[2],"\n")
         else:
             print("Esta compañía no existe en el registro")
     elif int(inputs[0]) == 3:
-        director_name = input("Inserte el nobre del director ue desea conocer: ")
+        director_name = input("Inserte el nombre del director que desea conocer: ")
         director = controller.discoverDirector(catalogo, director_name)
         if director != None:
             print(director[0],"\nLa lista que se imprimió contiene las",director[1],"películas del director",director_name.title(),"que tienen un promedio acumulado de",director[2],"\n")
         else:
             print("Este director no existe en el registro")
+    elif int(inputs[0]) == 4:
+        actor_name = input("Inserte el nombre del actor que desea conocer: ")
+        actor = controller.getActorInformation(catalogo, actor_name)
+        if actor != None:
+            print("Las películas en las que actuó son :", actor[0], ", la cantidad de películas en las que actuó es:", actor[1], ", estos son los promedios de todas sus películas:",actor[2],"el director con el que más participó es: ",actor[3])
+        else:
+            print("El actor", actor_name, "no se encuentra en la base de datos.")
     elif int(inputs[0]) == 6:
         country = input("Inserte el nombre del país que desea conocer: ")
         countries = controller.discoverMoviesByCountry(catalogo,country)

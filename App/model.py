@@ -228,7 +228,37 @@ def discoverDirector(catalog,director_name):
     except:
         res = None
     return res
-    
+
+def getActorInformation(catalog,actor):
+    idactors = mp.get(catalog["actor_name"], actor)
+    actores_directores = {}
+    peliculas = []
+    mayor_director = ""
+    prom = []
+    apariciones = 0
+    try:
+        cantidad_peliculas = lt.size(me.getValue(idactors)) 
+        iterator = it.newIterator(me.getValue(idactors))
+        while it.hasNext(iterator):
+            element = it.next(iterator)
+            nombre_pelis = me.getValue(mp.get(catalog["original_title"], element))
+            peliculas.append(nombre_pelis)
+            prom.append(me.getValue((mp.get(catalog["vote_average"], element))))
+            director = me.getValue(mp.get(catalog["director_id"], element))
+            if actores_directores.get(director, None)==None:
+                actores_directores[director]=1
+            else:
+                actores_directores[director]+=1
+            if actores_directores[director]>apariciones:
+                mayor_director = director
+                apariciones = actores_directores[director]
+            retorno = (peliculas, cantidad_peliculas, prom, mayor_director)
+    except:
+        retorno = None
+
+    return retorno
+
+
 def discoverMoviesByCountry(catalog,country):
     idpelis = mp.get(catalog["production_countries"],country.lower())
 
