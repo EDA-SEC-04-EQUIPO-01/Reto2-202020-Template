@@ -235,7 +235,7 @@ def getActorInformation(catalog,actor):
     actores_directores = {}
     peliculas = []
     mayor_director = ""
-    prom = []
+    prom = 0
     apariciones = 0
     try:
         cantidad_peliculas = lt.size(me.getValue(idactors)) 
@@ -244,7 +244,7 @@ def getActorInformation(catalog,actor):
             element = it.next(iterator)
             nombre_pelis = me.getValue(mp.get(catalog["original_title"], element))
             peliculas.append(nombre_pelis)
-            prom.append(me.getValue((mp.get(catalog["vote_average"], element))))
+            prom=float(me.getValue((mp.get(catalog["vote_average"], element))))
             director = me.getValue(mp.get(catalog["director_id"], element))
             if actores_directores.get(director, None)==None:
                 actores_directores[director]=1
